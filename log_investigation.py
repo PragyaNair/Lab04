@@ -52,14 +52,14 @@ def generate_port_traffic_report(port_number):
     Args:
         port_number (str or int): Destination port number
     """
-    # TODO: Complete function body per step 8
     # Get data from records that contain the specified destination port
     data = log_analysis_lib.filter_log_by_regex(log_path, r'^(.+ \d+) (.{8}).*SRC=(.*?) DST=(.*?) .*SPT=(.*?) DPT=(.*?) ')[1]
 
     # Generate the CSV report
     df = pd.DataFrame(data)
     csv_filename = f"destination_port_{port_number}_report.csv"
-    df.to_csv(csv_filename, index=False, header=)
+    headings = ('Date', 'Time', 'Source IP Address', 'Destination IP Address', 'Source Port', 'Destination Port')
+    df.to_csv(csv_filename, index=False, header=headings )
     return
 
 def generate_invalid_user_report():

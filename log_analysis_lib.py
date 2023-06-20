@@ -4,18 +4,21 @@ Library of functions that are useful for analyzing plain-text log files.
 import re
 import sys 
 import os 
+import pandas as pd 
 
 def main():
     # Get the log file path from the command line
     log_path = get_file_path_from_cmd_line()
 
     # Use filter_log_by_regex() to investigate the gateway log per Step 5
-    records, capture = filter_log_by_regex(log_path, r'sshd', print_summary=True, print_records=True)
+    records, captures = filter_log_by_regex(log_path, r'pam', print_summary=True, print_records=True)
      
 
     #Use filter_log_by_regex() to extract data from the gateway log per Step 6
    
-    records, capture = filter_log_by_regex(log_path, r'SRC=(.*?) DST=(.*?) LEN=(.*?)')[1]
+    captures = filter_log_by_regex(log_path, r'SRC=(.*?) DST=(.*?) LEN=(.*?)')[1]
+    df = pd.DataFrame(captures)
+    df.to_cvs('captures.csv', index=False, header=('Source IP', 'Destination IP', 'Length'))
 
     return
 
